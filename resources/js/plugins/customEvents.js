@@ -1,0 +1,1 @@
+let Fire = window.Fire = new Vue();
