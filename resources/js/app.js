@@ -53,6 +53,12 @@ const app = new Vue({
     },
     created() {
         Fire.$on('responseHandling', (response) => {
+            if (response.data.hasOwnProperty('message')) {
+                Toast.fire({
+                    icon: 'success',
+                    title: response.data.message
+                });
+            }
             if (response.data.hasOwnProperty('redirectTo')) {
                 this.$router.push(response.data.redirectTo);
             }

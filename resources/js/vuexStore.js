@@ -21,6 +21,7 @@ let getters = {
     settings: state => { return state.settings; },
 };
 let mutations = {};
+// use Fire.route() for ziggy router laravel route name
 let actions = {
     resetState({ commit }) {
         state.formdata = {};
