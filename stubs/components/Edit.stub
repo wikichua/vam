@@ -31,9 +31,9 @@ export default {
   props: ["id"],
   data() {
     return {
-      apiRouteUpdate: "{%model_string%}.update",
-      apiRouteShow: "{%model_string%}.show",
-      vueRouteList: "{%model_string%}.index"
+      apiRouteUpdate: "{%model_variable%}.update",
+      apiRouteShow: "{%model_variable%}.show",
+      vueRouteList: "{%model_variable%}.index"
     };
   },
   methods: {

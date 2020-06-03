@@ -21,8 +21,8 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      apiRouteStore: "{%model_string%}.store",
-      vueRouteList: "{%model_string%}.index"
+      apiRouteStore: "{%model_variable%}.store",
+      vueRouteList: "{%model_variable%}.index"
     };
   },
   methods: {

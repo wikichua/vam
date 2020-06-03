@@ -107,12 +107,31 @@ return [
 
 		'published_at' => [
 			'label' => 'Post Published Date',
-			'type' => 'datetime',
-			'class' => [], // add singleDateTimePicker for daterangepicker => https://www.daterangepicker.com
+			'type' => 'date',
+			'class' => [],
 			'attributes' => [],
 			'list' => true,
 			'search' => true,
-			'migration' => 'datetime:{%field%}|nullable',
+			'migration' => 'date:{%field%}|nullable',
+			'validation' => [
+				'create' => 'required',
+				'update' => 'required',
+			],
+			'options' => [],
+			'casts' => '',
+			'mutators' => [],
+			'relationship' => '',
+			'user_timezone' => true,
+		],
+
+		'timing' => [
+			'label' => 'Timing',
+			'type' => 'time',
+			'class' => [],
+			'attributes' => [],
+			'list' => true,
+			'search' => true,
+			'migration' => 'time:{%field%}|nullable',
 			'validation' => [
 				'create' => 'required',
 				'update' => 'required',
@@ -281,7 +300,12 @@ return [
 				'create' => 'required',
 				'update' => 'required',
 			],
-			'options' => "app('App\User')->query()->pluck('name','id')", // "app('App/User')->query()->pluck('name','id')"
+			// 'options' => "app('App\User')->query()->pluck('name','id')", // "app('App/User')->query()->pluck('name','id')"
+			'model_options' => [ // if both options and model_options are set at same time, model_options will be priority and ignored options
+				'query' => "app('App\User')->query()->pluck('name','id')",
+				'map_value' => "id", // according to bootstrap-vue, object contextual is obsoleted
+				'map_text' => "name", // according to bootstrap-vue, object contextual is obsoleted
+			],
 			'casts' => '',
 			'mutators' => [
 				'get' => '',

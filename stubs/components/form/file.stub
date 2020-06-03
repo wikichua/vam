@@ -1,12 +1,15 @@
-<div class="list-group-item">
-			    <div class="form-group row mb-0">
-			        <label for="{%field%}" class="col-md-3 col-form-label">{%label%}</label>
-			        <div class="col-md-9">
-			        	<div class="custom-file">
-						  	<input type="file" class="custom-file-input form-control {{ $errors->has('{%field%}')? 'form-error-input':'' }} {%class_tag%}" {%attributes_tag%} wire:change="$emit('fileChoosen',document.forms.createForm,document.forms.createForm.elements.field,'{%field%}')" name="{%field%}">
-						  	<label class="custom-file-label" for="customFile">Choose file</label>
-						</div>
-			            <div>@error('{%field%}') <span class="text-danger">{{ $message }}</span> @enderror</div>
-			        </div>
-			    </div>
-			</div>
+
+<b-form-group label="{%label%}:" label-for="{%field%}">
+              <b-form-file
+      v-model="formdata.{%field%}"
+      name="{%field%}"
+      :state="Boolean(formdata.{%field%})"
+      {%attributes_tag%}
+      placeholder="Choose a file or drop it here..."
+      drop-placeholder="Drop file here..."
+      :class="(allerrors.{%field%} ? 'is-invalid ' : '') + ' {%class_tag%}'"
+    ></b-form-file>
+            <div v-if="allerrors.{%field%}" :class="['invalid-feedback']">{{ allerrors.{%field%}[0] }}</div>
+          </b-form-group>
+
+			

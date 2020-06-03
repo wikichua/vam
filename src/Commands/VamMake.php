@@ -118,20 +118,21 @@ class VamMake extends Command
 
             $replace_for_form['{%setting_key%}'] = '';
 
-            if (isset($options['options']) && is_array($options['options']) && count($options['options'])) {
-                $opts = [];
-                foreach ($options['options'] as $key => $value) {
-                    $opts[] = "'$key' => '$value'";
+            if (isset($options['model_options']) && $options['model_options'] != '') {
+                # code...
+            } else {
+                if (isset($options['options']) && is_array($options['options']) && count($options['options'])) {
+                    $opts = [];
+                    foreach ($options['options'] as $key => $value) {
+                        $opts[] = "'$key' => '$value'";
+                    }
+                    $setting_keys[] = $setting_key = "{$this->replaces['{%model_variable%}']}_{$field}";
+                    $settings_options_up[] = "app(config('vam.models.setting'))->create(['key' => '$setting_key','value' => [".implode(',',$opts)."]]);";
+                    $settings_options_down[] = "app(config('vam.models.setting'))->where('key','$setting_key')->forceDelete();";
+        
+                    $replace_for_form['{%setting_key%}'] = $setting_key;
                 }
-                $setting_keys[] = $setting_key = "{$this->replaces['{%model_variable%}']}_{$field}";
-                $settings_options_up[] = "app(config('vam.models.setting'))->create(['key' => '$setting_key','value' => [".implode(',',$opts)."]]);";
-                $settings_options_down[] = "app(config('vam.models.setting'))->where('key','$setting_key')->forceDelete();";
-    
-                $replace_for_form['{%setting_key%}'] = $setting_key;
-            } elseif(isset($options['options']) && $options['options'] != '') {
-
             }
-            
 
             $replace_for_form['{%label%}'] = $options['label'];
             $replace_for_form['{%field%}'] = $field;
@@ -160,7 +161,7 @@ class VamMake extends Command
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
-                /*case 'date':
+                case 'date':
                     $stub = $this->stub_path . '/components/form/date.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Date stub file not found: <info>' . $stub . '</info>'); return;
@@ -168,10 +169,10 @@ class VamMake extends Command
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
-                case 'datetime':
-                    $stub = $this->stub_path . '/components/form/datetime.stub';
+                case 'time':
+                    $stub = $this->stub_path . '/components/form/time.stub';
                     if (!$this->files->exists($stub)) {
-                        $this->error('Datetime stub file not found: <info>' . $stub . '</info>'); return;
+                        $this->error('Time stub file not found: <info>' . $stub . '</info>'); return;
                     }
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
@@ -183,7 +184,7 @@ class VamMake extends Command
                     }
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
-                    break;*/
+                    break;
                 case 'textarea':
                     $stub = $this->stub_path . '/components/form/textarea.stub';
                     if (!$this->files->exists($stub)) {
@@ -200,30 +201,14 @@ class VamMake extends Command
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
-                /*case 'radio':
+                case 'radio':
                     $stub = $this->stub_path . '/components/form/radio.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Radio stub file not found: <info>' . $stub . '</info>'); return;
                     }
-                    if (isset($options['options']) && is_array($options['options']) && is_string($options['options']) == false) {
-                        $replace_for_form['{%select_options%}'] = "@foreach (settings('{$replace_for_form['{%model_variable%}']}_{$field}') as \$key => \$val)
-                        <div class=\"custom-control custom-radio {{ \$errors->has('{$field}')? 'form-error-input':'' }} {$replace_for_form['{%class_tag%}']}\">
-                            <input type=\"radio\" id=\"{{ \$key }}\" wire:model=\"{$field}\" class=\"custom-control-input\" value=\"{{ \$key }}\">
-                            <label class=\"custom-control-label\" for=\"{{ \$key }}\">{{ \$val }}</label>
-                        </div>
-                        @endforeach";
-                    } elseif (is_string($options['options']) == true) {
-                        $replace_for_form['{%select_options%}'] = "@foreach ({$options['options']} as \$key => \$val)
-                        <div class=\"custom-control custom-radio {{ \$errors->has('{%field%}')? 'form-error-input':'' }} {$replace_for_form['{%class_tag%}']}\">
-                            <input type=\"radio\" id=\"{{ \$key }}\" wire:model=\"{$field}\" class=\"custom-control-input\" value=\"{{ \$key }}\">
-                            <label class=\"custom-control-label\" for=\"{{ \$key }}\">{{ \$val }}</label>
-                        </div>
-                        @endforeach";
-                    }
-
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
-                    break;*/
+                    break;
                 case 'checkbox':
                     $stub = $this->stub_path . '/components/form/checkbox.stub';
                     if (!$this->files->exists($stub)) {

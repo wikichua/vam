@@ -42,9 +42,9 @@ $ php artisan vam:make <ModelName>
 ### Todo
 
 1. Additional fields to support
-	- File upload
-	- Datetime picker
-	- Date or Time picker
+	- ~File upload~
+	- ~Datetime picker~
+	- ~Date or Time picker~
 	- Select, Radio & Checkbox fetch options from Model
 2. Profile View & Update
 3. Swal alert message
