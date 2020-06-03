@@ -196,7 +196,7 @@ class VamMake extends Command
                 case 'select':
                     $stub = $this->stub_path . '/components/form/'.$options['type'].'.stub';
                     if (!$this->files->exists($stub)) {
-                        $this->error(ucfirst($options['type']).' stub file not found: <info>' . $stub . '</info>'); return;
+                        $this->error('Select stub file not found: <info>' . $stub . '</info>'); return;
                     }
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
