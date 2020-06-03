@@ -1,0 +1,6 @@
+@if ($toggleFilter)
+<tr>
+    {%search_fields%}
+    <th><button class="btn btn-danger btn-sm" wire:click="resetSearch()">Reset</button></th>
+</tr>
+@endif

@@ -9,6 +9,10 @@
             Dashboard
 		</router-link>
 
+		<!--DoNotRemoveMe-->
+		
+		<div class="sb-sidenav-menu-heading">Administrative</div>
+		
 		<router-link :to="{ name: 'setting.index' }" class="nav-link" v-if="$can('Read Settings')">
 			<div class="sb-nav-link-icon">
 				<i class="fas fa-tools"></i>
@@ -44,14 +48,7 @@
 			Activity Logs
 		</router-link>
 
-		<div class="sb-sidenav-menu-heading">Testing</div>
 
-		<router-link to="/profile" class="nav-link">
-			<div class="sb-nav-link-icon">
-				<i class="fas fa-user"></i>
-			</div>
-			{{ userName }}
-		</router-link>
 	</div>
 </template>
 

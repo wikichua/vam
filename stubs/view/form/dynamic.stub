@@ -1,0 +1,9 @@
+<div class="list-group-item">
+			    <div class="form-group row mb-0">
+			        <label for="{%field%}" class="col-md-3 col-form-label">{%label%}</label>
+			        <div class="col-md-9">
+			            <input type="{%input_type%}" class="form-control {{ $errors->has('{%field%}')? 'form-error-input':'' }} {%class_tag%}" wire:model="{%field%}" {%attributes_tag%}>
+			            <div>@error('{%field%}') <span class="text-danger">{{ $message }}</span> @enderror</div>
+			        </div>
+			    </div>
+			</div>

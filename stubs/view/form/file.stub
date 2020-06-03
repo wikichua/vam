@@ -1,0 +1,12 @@
+<div class="list-group-item">
+			    <div class="form-group row mb-0">
+			        <label for="{%field%}" class="col-md-3 col-form-label">{%label%}</label>
+			        <div class="col-md-9">
+			        	<div class="custom-file">
+						  	<input type="file" class="custom-file-input form-control {{ $errors->has('{%field%}')? 'form-error-input':'' }} {%class_tag%}" {%attributes_tag%} wire:change="$emit('fileChoosen',document.forms.createForm,document.forms.createForm.elements.field,'{%field%}')" name="{%field%}">
+						  	<label class="custom-file-label" for="customFile">Choose file</label>
+						</div>
+			            <div>@error('{%field%}') <span class="text-danger">{{ $message }}</span> @enderror</div>
+			        </div>
+			    </div>
+			</div>

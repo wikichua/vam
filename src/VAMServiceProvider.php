@@ -1,6 +1,6 @@
 <?php
 
-namespace vam\VAM;
+namespace Wikichua\VAM;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
@@ -24,6 +24,8 @@ class VAMServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'vam');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/web.php');
+
+        $this->app['router']->aliasMiddleware('https_protocol', 'Wikichua\VAM\Middleware\HttpsProtocol');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -76,15 +78,15 @@ class VAMServiceProvider extends ServiceProvider
         // Publishing the views.
         $this->publishes([
             __DIR__ . '/../resources/views' => base_path('resources/views/vendor/vam'),
-        ], 'vam.views');
+        ], 'vam.view');
 
         // Publishing the resources.
         $this->publishes([
-            __DIR__ . '/../resources/js' => base_path('resources/views/js'),
-        ], 'vam.views');
-        $this->publishes([
-            __DIR__ . '/../resources/sass' => base_path('resources/views/sass'),
-        ], 'vam.views');
+            __DIR__ . '/../resources/js' => base_path('resources/js'),
+            __DIR__ . '/../resources/sass' => base_path('resources/sass'),
+            __DIR__ . '/../package.json' => base_path('package.json'),
+            __DIR__ . '/../webpack.mix.js' => base_path('webpack.mix.js'),
+        ], 'vam.install');
 
         // Publishing the translation files.
         /*$this->publishes([
@@ -92,16 +94,25 @@ class VAMServiceProvider extends ServiceProvider
         ], 'vam.views');*/
 
         // Registering package commands.
-        // $this->commands([]);
+        $this->commands([
+            Commands\VamConfig::class,
+            Commands\VamMake::class,
+        ]);
     }
 
     protected function loadRoutes()
     {
-        $namespace = '\vam\VAM\Http\Controllers';
         foreach (File::files(__DIR__ . '/routers/') as $file) {
             Route::middleware('web')
-                ->namespace($namespace)
+                ->namespace(config('vam.controller_namespace'))
                 ->group($file->getPathname());
+        }
+        if (File::exists(app_path('../routes/routers'))) {
+            foreach (File::files(app_path('../routes/routers/')) as $file) {
+            Route::middleware('web')
+                ->namespace(config('vam.custom_controller_namespace'))
+                ->group($file->getPathname());
+        }
         }
     }
 
