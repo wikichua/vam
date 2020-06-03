@@ -109,9 +109,9 @@ class VAMServiceProvider extends ServiceProvider
         }
         if (File::exists(app_path('../routes/routers'))) {
             foreach (File::files(app_path('../routes/routers/')) as $file) {
-            Route::middleware('web')
-                ->group($file->getPathname());
-        }
+                Route::middleware('web')
+                    ->group($file->getPathname());
+            }
         }
     }
 
