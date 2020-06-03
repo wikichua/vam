@@ -1,7 +1,7 @@
 {
     "name": "wikichua/vam",
     "description": "Vue Admin Manager + CRUD Generator for bootstrap Admin Panel Platform",
-    "license": "license",
+    "license": "MIT",
     "authors": [
         {
             "name": "Wiki Chua",
