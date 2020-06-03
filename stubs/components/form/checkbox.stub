@@ -1,0 +1,10 @@
+<b-form-group label="{%label%}:" label-for="{%field%}">
+              <b-form-checkbox-group
+                v-model="{%field%}"
+                name="{%field%}[]"
+                class="{%class_tag%}"
+				{%attributes_tag%}
+                :options="settings['{%setting_key%}']"
+              ></b-form-checkbox-group>
+            <div v-if="allerrors.{%field%}" :class="['invalid-feedback']">{{ allerrors.{%field%}[0] }}</div>
+          </b-form-group>

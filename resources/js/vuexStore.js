@@ -29,23 +29,13 @@ let actions = {
         state.settings = {};
     },
     getSettingsList({ commit }, key) {
-        // Fire.route('setting.dropdown', key) // use Fire in customEvents.js to call route because in ziggy.js, Vue.mixin is defined
-        Fire.$loading(true);
-        Fire.$Progress.start();
-        axios.get(Fire.route('setting.dropdown', { key }))
-            .then(response => {
-                state.settings = response.data;
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!'
-                });
-            }).finally(() => {
-                Fire.$loading(false);
-                Fire.$Progress.finish();
+        if (Array.isArray(key)) {
+            key.forEach((keyName) => {
+                state.settings[keyName] = Fire.$settings(keyName);
             });
+        } else {
+            state.settings[key] = Fire.$settings(key);
+        }
     },
     postItem({ commit }, obj) {
         let url = obj.url;

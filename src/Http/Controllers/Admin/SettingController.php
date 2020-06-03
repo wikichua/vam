@@ -81,32 +81,4 @@ class SettingController extends Controller
             'message' => 'Setting deleted.',
         ]);
     }
-
-    public function dropdown(Request $request)
-    {
-        if ($request->get('key', '') == '') {
-            return [];
-        }
-
-        if (is_array($request->get('key'))) {
-            $keys = $request->get('key');
-        } else {
-            $keys = [$request->get('key')];
-        }
-
-        $bootstrapVueSelects = [];
-        foreach ($keys as $key) {
-            if (is_array(settings($key))) {
-                foreach (settings($key) as $value => $text) {
-                    $bootstrapVueSelects[$key][] = [
-                        'value' => $value,
-                        'text' => $text,
-                    ];
-                }
-            } else {
-                $bootstrapVueSelects[$key] = settings($key);
-            }
-        }
-        return response()->json($bootstrapVueSelects);
-    }
 }

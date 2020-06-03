@@ -48,7 +48,6 @@
             <div v-if="allerrors.type" :class="['invalid-feedback']">{{ allerrors.type[0] }}</div>
           </b-form-group>
           <b-form-group label="Roles:" label-for="role">
-            <b-form-group>
               <b-form-checkbox-group
                 v-model="roles"
                 name="roles[]"
@@ -56,7 +55,6 @@
                 inline
                 :options="options"
               ></b-form-checkbox-group>
-            </b-form-group>
             <div v-if="allerrors.roles" :class="['invalid-feedback']">{{ allerrors.roles[0] }}</div>
           </b-form-group>
           <b-button type="submit" variant="dark">Submit</b-button>

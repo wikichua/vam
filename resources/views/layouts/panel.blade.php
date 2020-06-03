@@ -63,8 +63,10 @@
     <script>
         @auth
         window.Permissions = @json(auth()->user()->allPermissions());
+        window.Settings = @json(app(config('vam.models.setting'))->getAllSettings());
       @else
         window.Permissions = [];
+        window.Settings = [];
       @endauth
     </script>
     <script src="{{ asset('js/app.js') }}"></script>

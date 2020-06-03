@@ -12,6 +12,7 @@ require('./plugins/progressbar');
 require('./plugins/vueLoading');
 require('./plugins/ziggy');
 require('./plugins/permissions');
+require('./plugins/settings');
 require('./plugins/customEvents');
 
 /**

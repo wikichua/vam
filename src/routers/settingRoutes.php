@@ -13,7 +13,5 @@ Route::group(['middleware' => ['web', 'auth', 'can:Access Admin Panel']], functi
         Route::match(['get', 'head'], '{setting}/read', 'SettingController@show')->name('setting.show');
         Route::match(['put', 'patch'], '{setting}/update', 'SettingController@update')->name('setting.update');
         Route::match(['delete'], '{setting}/delete', 'SettingController@destroy')->name('setting.destroy');
-
-        Route::match(['get', 'head'], 'dropdown', 'SettingController@dropdown')->name('setting.dropdown');
     });
 });

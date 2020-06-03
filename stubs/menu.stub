@@ -1,4 +1,4 @@
-<router-link :to="{ name: '{%model_variable%}.index' }" class="nav-link" v-if="$can('Read {%model_class%}')">
+<router-link :to="{ name: '{%model_variable%}.index' }" class="nav-link" v-if="$can('Read {%model_strings%}')">
 			<div class="sb-nav-link-icon">
 				<i class="{%menu_icon%}"></i>
 			</div>

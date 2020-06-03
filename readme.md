@@ -1,35 +1,55 @@
-# VAM
+# Vue Admin Manager (CRUD generator) - Basic (TO BE ENHANCED)
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+## Requirements
+
+1. A new Laravel related project (completedly new)
+2. Composer require laravel/ui (no need installing the auth scalfolding)
+3. A working NPM in your machine
+4. Knowledge in Vue Js, Bootstrap-Vue, Axios, Sass, & all Laravel stuffs...
 
 ## Installation
 
-Via Composer
-
 ``` bash
-$ composer require wikichua/vam
+$ composer require wikichua/vam dev-master
+$ php artisan vendor:publish --tag=vam.install --force
+$ php artisan migrate
+$ php artisan ziggy:generate
+$ npm install && npm run dev
 ```
-
 ## Usage
 
-## Change log
+### Creating new module
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
+```bash
+$ php artisan vam:config <ModelName>
+$ php artisan vam:make <ModelName>
 ```
 
-## Contributing
+### Current Edition
 
-Please see [contributing.md](contributing.md) for details and a todolist.
+1. Activity Logging
+2. Preset Authentication (exactly from Laravel scalfolding)
+3. Permission & Role (Authorization)
+4. Settings configuration
+5. Basic Users' Management
+6. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
+
+### Todo
+
+1. Additional fields to support
+	- File upload
+	- Datetime picker
+	- Date or Time picker
+	- Select, Radio & Checkbox fetch options from Model
+2. Profile View & Update
+3. Swal alert message
+4. Setting update push notification
+5. (still thinking...)
 
 ## Security
 

@@ -38,7 +38,7 @@ class VamMake extends Command
         $this->line('<info>Since you had done make the CRUD, we will help you set ready to false to prevent accidentally make after you have done all your changes in your flow!</info>');
         $this->line('Config has changed: <info>' . $config_file . '</info>');
 
-        $this->line('Now remember to run php artisan ziggy:generate && npm run production after you have done adjusting your vue component or business in your controler & model.');
+        $this->alert("Now remember to run php artisan ziggy:generate && npm run production\nafter you have done adjusting your vue component\nor business in your controler & model.");
     }
     protected function initReplacer()
     {
@@ -46,13 +46,13 @@ class VamMake extends Command
 
         $this->replaces['{%model%}'] = $this->model;
         $this->replaces['{%model_namespace%}'] = ucfirst(str_replace('/', '\\', config('vam.model_namespace')));
-        $this->replaces['{%model_string%}'] = trim(preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $this->replaces['{%model%}']));
         $this->replaces['{%model_class%}'] = $this->replaces['{%model%}'];
+        $this->replaces['{%model_string%}'] = trim(preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $this->replaces['{%model%}']));
         $this->replaces['{%model_strings%}'] = str_plural($this->replaces['{%model_string%}']);
         $this->replaces['{%model_variable%}'] = strtolower(str_replace(' ', '_', $this->replaces['{%model_string%}']));
         $this->replaces['{%model_variables%}'] = strtolower(str_replace(' ', '_', $this->replaces['{%model_strings%}']));
         $this->replaces['{%model_%}'] = strtolower(str_replace(' ', '_', $this->replaces['{%model_strings%}']));
-        $this->replaces['{%table_name%}'] = '';
+        $this->replaces['{%table_name%}'] = $this->replaces['{%model_variables%}'];
         $this->replaces['{%menu_name%}'] = $this->replaces['{%model_strings%}'];
         $this->replaces['{%menu_icon%}'] = $this->config['menu_icon'];
 
@@ -66,7 +66,7 @@ class VamMake extends Command
     protected function reinstate()
     {
         $config_form = $this->config['form'];
-        $search_scopes = $list_cols = $list_heads = $settings_options_up = $settings_options_down = $read_fields = $form_fields = $validations = $user_timezones = $fillables = $casts = $appends = $mutators = $relationships = $relationships_query = [];
+        $setting_keys = $table_fields = $search_scopes = $settings_options_up = $settings_options_down = $read_fields = $form_fields = $validations = $user_timezones = $fillables = $casts = $appends = $mutators = $relationships = $relationships_query = [];
 
         foreach ($config_form as $field => $options) {
             if (isset($options['migration']) && $options['migration'] != '') {
@@ -78,10 +78,10 @@ class VamMake extends Command
             if ($options['casts'] != '') {
                 $casts[] = "'{$field}' => '{$options['casts']}'";
             }
-
             if ($options['list']) {
-                $list_heads[] = '<th>'.$options['label'].'</th>';
-                $list_cols[] = '<td>{{$model->'.$field.'}}</td>';
+                $search_boolean_string = $options['search']? 'true':'false';
+                $sort_boolean_string = isset($options['sortable']) && $options['sortable']? 'true':'false';
+                $table_fields[] = '{ key: "'.$field.'", label: "'.$options['label'].'", sortable: '.$sort_boolean_string.', filterable: '.$search_boolean_string.' }';
             }
             $scopes = [];
             if ($options['search']) {
@@ -116,14 +116,22 @@ class VamMake extends Command
                 }
             }
 
+            $replace_for_form['{%setting_key%}'] = '';
+
             if (isset($options['options']) && is_array($options['options']) && count($options['options'])) {
                 $opts = [];
                 foreach ($options['options'] as $key => $value) {
                     $opts[] = "'$key' => '$value'";
                 }
-                $settings_options_up[] = "app(config('vam.model.setting'))->create(['key' => '{$this->replaces['{%model_variable%}']}_{$field}','value' => [".implode(',',$opts)."]]);";
-                $settings_options_down[] = "app(config('vam.model.setting'))->where('key','{$this->replaces['{%model_variable%}']}_{$field}')->forceDelete();";
+                $setting_keys[] = $setting_key = "{$this->replaces['{%model_variable%}']}_{$field}";
+                $settings_options_up[] = "app(config('vam.models.setting'))->create(['key' => '$setting_key','value' => [".implode(',',$opts)."]]);";
+                $settings_options_down[] = "app(config('vam.models.setting'))->where('key','$setting_key')->forceDelete();";
+    
+                $replace_for_form['{%setting_key%}'] = $setting_key;
+            } elseif(isset($options['options']) && $options['options'] != '') {
+
             }
+            
 
             $replace_for_form['{%label%}'] = $options['label'];
             $replace_for_form['{%field%}'] = $field;
@@ -131,7 +139,7 @@ class VamMake extends Command
             $replace_for_form['{%attributes_tag%}'] = implode(' ', $options['attributes']);
             $replace_for_form['{%class_tag%}'] = implode(' ', $options['class']);
 
-            $stub = $this->stub_path . '/view/form/plaintext.stub';
+            $stub = $this->stub_path . '/components/form/plaintext.stub';
             if (!$this->files->exists($stub)) {
                 $this->error('Plaintext stub file not found: <info>' . $stub . '</info>'); return;
             }
@@ -142,20 +150,18 @@ class VamMake extends Command
                 case 'email':
                 case 'number':
                 case 'password':
-                case 'tel':
                 case 'text':
-                case 'time':
                 case 'url':
                     $replace_for_form['{%input_type%}'] = $options['type'];
-                    $stub = $this->stub_path . '/view/form/dynamic.stub';
+                    $stub = $this->stub_path . '/components/form/dynamic.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Dynamic stub file not found: <info>' . $stub . '</info>'); return;
                     }
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
-                case 'date':
-                    $stub = $this->stub_path . '/view/form/date.stub';
+                /*case 'date':
+                    $stub = $this->stub_path . '/components/form/date.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Date stub file not found: <info>' . $stub . '</info>'); return;
                     }
@@ -163,7 +169,7 @@ class VamMake extends Command
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
                 case 'datetime':
-                    $stub = $this->stub_path . '/view/form/datetime.stub';
+                    $stub = $this->stub_path . '/components/form/datetime.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Datetime stub file not found: <info>' . $stub . '</info>'); return;
                     }
@@ -171,15 +177,15 @@ class VamMake extends Command
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
                 case 'file':
-                    $stub = $this->stub_path . '/view/form/file.stub';
+                    $stub = $this->stub_path . '/components/form/file.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('File stub file not found: <info>' . $stub . '</info>'); return;
                     }
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
-                    break;
+                    break;*/
                 case 'textarea':
-                    $stub = $this->stub_path . '/view/form/textarea.stub';
+                    $stub = $this->stub_path . '/components/form/textarea.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Textarea stub file not found: <info>' . $stub . '</info>'); return;
                     }
@@ -187,26 +193,15 @@ class VamMake extends Command
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
                 case 'select':
-                case 'select2':
-                    $stub = $this->stub_path . '/view/form/'.$options['type'].'.stub';
+                    $stub = $this->stub_path . '/components/form/'.$options['type'].'.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error(ucfirst($options['type']).' stub file not found: <info>' . $stub . '</info>'); return;
                     }
-                    if (isset($options['options']) && is_array($options['options']) && is_string($options['options']) == false) {
-                        $replace_for_form['{%select_options%}'] = "@foreach (settings('{$replace_for_form['{%model_variable%}']}_{$field}') as \$key => \$val)
-                                <option value=\"{{ \$key }}\">{{ \$val }}</option>
-                            @endforeach";
-                    } elseif (is_string($options['options']) == true) {
-                        $replace_for_form['{%select_options%}'] = "@foreach ({$options['options']} as \$key => \$val)
-                                <option value=\"{{ \$key }}\">{{ \$val }}</option>
-                            @endforeach";
-                    }
-
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
-                case 'radio':
-                    $stub = $this->stub_path . '/view/form/radio.stub';
+                /*case 'radio':
+                    $stub = $this->stub_path . '/components/form/radio.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Radio stub file not found: <info>' . $stub . '</info>'); return;
                     }
@@ -228,28 +223,12 @@ class VamMake extends Command
 
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
-                    break;
+                    break;*/
                 case 'checkbox':
-                    $stub = $this->stub_path . '/view/form/checkbox.stub';
+                    $stub = $this->stub_path . '/components/form/checkbox.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Checkbox stub file not found: <info>' . $stub . '</info>'); return;
                     }
-                    if (isset($options['options']) && is_array($options['options']) && is_string($options['options']) == false) {
-                        $replace_for_form['{%select_options%}'] = "@foreach (settings('{$replace_for_form['{%model_variable%}']}_{$field}') as \$key => \$val)
-                        <div class=\"custom-control custom-checkbox {{ \$errors->has('{$field}')? 'form-error-input':'' }} {$replace_for_form['{%class_tag%}']}\">
-                            <input type=\"checkbox\" id=\"{{ \$key }}\" wire:model=\"{$field}.{{ \$key }}\" class=\"custom-control-input\" value=\"{{ \$key }}\">
-                            <label class=\"custom-control-label\" for=\"{{ \$key }}\">{{ \$val }}</label>
-                        </div>
-                        @endforeach";
-                    } elseif (is_string($options['options']) == true) {
-                        $replace_for_form['{%select_options%}'] = "@foreach ({$options['options']} as \$key => \$val)
-                        <div class=\"custom-control custom-checkbox {{ \$errors->has('{$field}')? 'form-error-input':'' }} {$replace_for_form['{%class_tag%}']}\">
-                            <input type=\"checkbox\" id=\"{{ \$key }}\" wire:model=\"{$field}.{{ \$key }}\" class=\"custom-control-input\" value=\"{{ \$key }}\">
-                            <label class=\"custom-control-label\" for=\"{{ \$key }}\">{{ \$val }}</label>
-                        </div>
-                        @endforeach";
-                    }
-
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
@@ -268,6 +247,11 @@ class VamMake extends Command
             $mutator[] = $this->indent(2).$this->replaceholder($value)."\n". $this->indent(1)."}";
             $mutators[] = implode('', $mutator);
         }
+
+        if (count($setting_keys) > 0) {
+            $dispatch_str = 'this.$store.dispatch("getSettingsList", '.json_encode($setting_keys).');';
+            $this->replaces['{%dispatch_getSettingsList%}'] = $dispatch_str.PHP_EOL.$this->indent(1)."// you may now access with this.settings.<setting_key> or this.settings['<setting_key>']";
+        }
         
         $this->replaces['{%fillable_array%}'] = implode(",\n".$this->indent(2), $fillables);
         $this->replaces['{%mutators%}'] = implode(",\n".$this->indent(2), $mutators);
@@ -282,15 +266,14 @@ class VamMake extends Command
         $this->replaces['{%read_fields%}'] = isset($read_fields) ? trim(implode(PHP_EOL.$this->indent(3), $read_fields)) : '';
         $this->replaces['{%settings_options_up%}'] = isset($settings_options_up) ? trim(implode(PHP_EOL.$this->indent(2), $settings_options_up)) : '';
         $this->replaces['{%settings_options_down%}'] = isset($settings_options_down) ? trim(implode(PHP_EOL.$this->indent(2), $settings_options_down)) : '';
-        $this->replaces['{%list_cols%}'] = isset($list_cols) ? trim(implode(PHP_EOL.$this->indent(5), $list_cols)) : '';
-        $this->replaces['{%list_heads%}'] = isset($list_heads) ? trim(implode(PHP_EOL.$this->indent(5), $list_heads)) : '';
         $this->replaces['{%search_scopes%}'] = isset($search_scopes) ? trim(implode(PHP_EOL.$this->indent(1), $search_scopes)) : '';
+        $this->replaces['{%table_fields%}'] = isset($table_fields) ? trim(implode(','.PHP_EOL.$this->indent(2)."  ", $table_fields)).',' : '';
 
         $this->model();
         $this->controller();
         $this->apiRoute();
         $this->vueRoute();
-        // $this->vueComponents();
+        $this->vueComponents();
         $this->menu();
 
         if ($this->config['migration']) {
@@ -382,22 +365,22 @@ class VamMake extends Command
     }
     protected function vueComponents()
     {
-        $view_files = ['create','index','read','update','search'];
-        foreach ($view_files as $mode) {
-            $view_stub = $this->stub_path.'/view/'.$mode.'.stub';
-            if (!$this->files->exists($view_stub)) {
-                $this->error('View stub file not found: <info>' . $view_stub . '</info>'); return;
+        $component_files = ['List','Create','Edit','Show'];
+        foreach ($component_files as $mode) {
+            $component_stub = $this->stub_path.'/components/'.$mode.'.stub';
+            if (!$this->files->exists($component_stub)) {
+                $this->error('View stub file not found: <info>' . $component_stub . '</info>'); return;
             }
-            $view_path = resource_path('views/livewire/'.$this->replaces['{%model_variable%}']);
-            if (!$this->files->exists($view_path)) {
-                $this->files->makeDirectory($view_path, 0755, true);
+            $component_path = resource_path('js/components/'.$this->replaces['{%model_variable%}']);
+            if (!$this->files->exists($component_path)) {
+                $this->files->makeDirectory($component_path, 0755, true);
             }
 
-            $view_file = resource_path('views/livewire/'.$this->replaces['{%model_variable%}'].'/'.$mode.'.blade.php');
-            $view_stub = $this->files->get($view_stub);
+            $component_file = resource_path('js/components/'.$this->replaces['{%model_variable%}'].'/'.$mode.'Component.vue');
+            $component_stub = $this->files->get($component_stub);
 
-            $this->files->put($view_file, $this->replaceholder($view_stub));
-            $this->line('View file created: <info>' . $view_file . '</info>');
+            $this->files->put($component_file, $this->replaceholder($component_stub));
+            $this->line('Vue component file created: <info>' . $component_file . '</info>');
         }
     }
     protected function migration()

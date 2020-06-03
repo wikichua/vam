@@ -36,7 +36,6 @@ class Setting extends Model
     }
     public function getRowsAttribute()
     {
-
         if (json_decode($this->attributes['value'])) {
             $array = json_decode($this->attributes['value'], true);
             $rows = [];
@@ -52,5 +51,23 @@ class Setting extends Model
             'index' => null,
             'value' => null,
         ];;
+    }
+    public function getAllSettings()
+    {
+        $sets = [];
+        $settings = app(config('vam.models.setting'))->query()->pluck('value','key');
+        foreach ($settings as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $sets[$key][] = [
+                        'value' => $k,
+                        'text' => $v,
+                    ];
+                }
+            } else {
+                $sets[$key] = $value;
+            }
+        }
+        return $sets;
     }
 }
