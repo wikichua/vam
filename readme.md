@@ -56,11 +56,12 @@ This could prevent you from accidentally run vam:make again.
 ### Current Edition
 
 1. Activity Logging
-2. Preset Authentication (exactly from Laravel scalfolding)
-3. Permission & Role (Authorization)
-4. Settings configuration
-5. Basic Users' Management
-6. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
+1. Preset Authentication (exactly from Laravel scalfolding)
+1. Permission & Role (Authorization)
+1. Settings configuration
+1. Basic Users' Management
+1. Profile & Password Update
+1. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
 
 ### Todo
 
@@ -73,6 +74,7 @@ This could prevent you from accidentally run vam:make again.
 3. ~Swal alert message~
 4. Setting update push notification
 5. ~Customize action confirmed message on declared "confirmed" in Vuex~
+
 ...still thinking...
 
 ## Security
