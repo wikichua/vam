@@ -8,7 +8,7 @@
 ## Requirements
 
 1. A new Laravel related project (completedly new)
-2. Composer require laravel/ui (no need installing the auth scalfolding)
+2. Composer require laravel/ui (no need installing the auth scaffolding)
 3. A working NPM in your machine
 4. Knowledge in Vue Js, Bootstrap-Vue, Axios, Sass, & all Laravel stuffs...
 
@@ -56,7 +56,7 @@ This could prevent you from accidentally run vam:make again.
 ### Current Edition
 
 1. Activity Logging
-1. Preset Authentication (exactly from Laravel scalfolding)
+1. Preset Authentication (exactly from Laravel scaffolding)
 1. Permission & Role (Authorization)
 1. Settings configuration
 1. Basic Users' Management
