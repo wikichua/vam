@@ -30,6 +30,16 @@ $ php artisan vam:config <ModelName>
 $ php artisan vam:make <ModelName>
 ```
 
+#### Config
+
+You may get the sample once vam:config called. Do advise if that's confusing, I will then make a wiki.md for that.
+In case of you getting "Config file is not ready". This indicate your config generated from vam:config is still work in progress.
+
+    'ready' => false, // set true when you are ready to generate CRUD
+
+Once you have done your config, you can switch that to true. Of course after vam:make is done, this section will be turned to true automatically.
+This could prevent you from accidentally run vam:make again.
+
 ### Current Edition
 
 1. Activity Logging
