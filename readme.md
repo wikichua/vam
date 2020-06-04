@@ -62,18 +62,19 @@ This could prevent you from accidentally run vam:make again.
 1. Basic Users' Management
 1. Profile & Password Update
 1. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
+    - Datatable listing
+        - Able to delete row record (Authorization Gate included)
+    - Create and Edit form
+        - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio and etc...
+1. Swal and Toast integrated
 
 ### Todo
 
 1. Additional fields to support
-	- ~File upload~
-	- ~Datetime picker~
-	- ~Date or Time picker~
+	- Editor
 	- Select, Radio & Checkbox fetch options from Model
-2. ~Profile View & Update~
-3. ~Swal alert message~
-4. Setting update push notification
-5. ~Customize action confirmed message on declared "confirmed" in Vuex~
+    - Select2 or Datalist from Bootstrap-vue
+1. Setting update push notification
 
 ...still thinking...
 
