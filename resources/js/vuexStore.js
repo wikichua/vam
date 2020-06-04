@@ -38,71 +38,81 @@ let actions = {
             state.settings[key] = Fire.$settings(key);
         }
     },
-    postItem({ commit }, obj) {
-        let url = obj.url;
-        let data = obj.data;
-        Fire.$loading(true);
-        Fire.$Progress.start();
-        axios.post(url, data, state.axiosConfigs)
-            .then(response => {
-                state.success = true;
-                state.response = response;
-                Fire.$emit('responseHandling', response);
-            })
-            .catch(error => {
-                state.success = false;
-                state.allerrors = error.response.data.errors;
-            }).finally(() => {
-                Fire.$loading(false);
-                Fire.$Progress.finish();
+    postItem({ commit, dispatch }, obj) {
+        let canSubmitNow = true;
+        if (obj.hasOwnProperty('confirmed')) {
+            canSubmitNow = false;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: obj.confirmed,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+            }).then((result) => {
+                if (result.value) {
+                    dispatch('commitPost', obj);
+                }
             });
+        } else {
+            dispatch('commitPost', obj);
+        }
     },
-    patchItem({ commit }, obj) {
-        let url = obj.url;
-        let data = obj.data;
-        data.append('_method', 'patch');
-        Fire.$loading(true);
-        Fire.$Progress.start();
-        axios.post(url, data, state.axiosConfigs)
-            .then(response => {
-                state.success = true;
-                state.response = response;
-                Fire.$emit('responseHandling', response);
-            })
-            .catch(error => {
-                state.success = false;
-                state.allerrors = error.response.data.errors;
-            }).finally(() => {
-                Fire.$loading(false);
-                Fire.$Progress.finish();
+    patchItem({ commit, dispatch }, obj) {
+        let canSubmitNow = true;
+        obj.data.append('_method', 'patch');
+        if (obj.hasOwnProperty('confirmed')) {
+            canSubmitNow = false;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: obj.confirmed,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+            }).then((result) => {
+                if (result.value) {
+                    dispatch('commitPost', obj);
+                }
             });
+        } else {
+            dispatch('commitPost', obj);
+        }
     },
-    putItem({ commit }, obj) {
-        let url = obj.url;
-        let data = obj.data;
-        data.append('_method', 'put');
-        Fire.$loading(true);
-        Fire.$Progress.start();
-        axios.post(url, data, state.axiosConfigs)
-            .then(response => {
-                state.success = true;
-                state.response = response;
-                Fire.$emit('responseHandling', response);
-            })
-            .catch(error => {
-                state.success = false;
-                state.allerrors = error.response.data.errors;
-            }).finally(() => {
-                Fire.$loading(false);
-                Fire.$Progress.finish();
+    putItem({ commit, dispatch }, obj) {
+        let canSubmitNow = true;
+        obj.data.append('_method', 'put');
+        if (obj.hasOwnProperty('confirmed')) {
+            canSubmitNow = false;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: obj.confirmed,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, submit it!'
+            }).then((result) => {
+                if (result.value) {
+                    dispatch('commitPost', obj);
+                }
             });
+        } else {
+            dispatch('commitPost', obj);
+        }
     },
     deleteItem({ commit }, obj) {
         let url = obj.url;
         let table = obj.table;
+        let msg = "You are going to make a difficult decision!";
+        if (obj.hasOwnProperty('confirmed')) {
+            msg = obj.confirmed;
+        }
         Swal.fire({
             title: 'Are you sure?',
-            text: "You are going to make a difficult decision!",
+            text: msg,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -154,6 +164,25 @@ let actions = {
                     Fire.$Progress.finish();
                 });
         });
+    },
+    commitPost({ commit }, obj) {
+        let url = obj.url;
+        let data = obj.data;
+        Fire.$loading(true);
+        Fire.$Progress.start();
+        axios.post(url, data, state.axiosConfigs)
+            .then(response => {
+                state.success = true;
+                state.response = response;
+                Fire.$emit('responseHandling', response);
+            })
+            .catch(error => {
+                state.success = false;
+                state.allerrors = error.response.data.errors;
+            }).finally(() => {
+                Fire.$loading(false);
+                Fire.$Progress.finish();
+            });
     }
 }
 

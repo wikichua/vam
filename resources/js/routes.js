@@ -3,7 +3,6 @@ import Vue from 'vue';
 Vue.component('sidebar', require('./components/SideBarComponent.vue').default);
 
 import Dashboard from './components/DashboardComponent.vue';
-import Profile from './components/ProfileComponent.vue';
 
 export const routes = [
     {
@@ -11,15 +10,10 @@ export const routes = [
         component: Dashboard,
         name: 'dashboard',
         props: true
-    },
-    {
-        path: '/profile',
-        component: Profile,
-        name: 'profile',
-        props: true
-    },
+    }
 ];
 
+require('./routers/profileRoutes');
 require('./routers/userRoutes');
 require('./routers/settingRoutes');
 require('./routers/roleRoutes');

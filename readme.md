@@ -21,6 +21,15 @@ $ php artisan migrate
 $ php artisan ziggy:generate
 $ npm install && npm run dev
 ```
+
+Remember to update your .env file, especially the database section, and also your domain name for ziggy generate purposes.
+
+This is how I normall do
+
+``` bash
+art vendor:publish --tag=vam.install --force && art ziggy:generate && npm run watch-poll
+```
+
 ## Usage
 
 ### Creating new module
@@ -28,6 +37,8 @@ $ npm install && npm run dev
 ```bash
 $ php artisan vam:config <ModelName>
 $ php artisan vam:make <ModelName>
+$ php artisan ziggy:generate
+$ npm install && npm run dev
 ```
 
 #### Config
@@ -35,7 +46,9 @@ $ php artisan vam:make <ModelName>
 You may get the sample once vam:config called. Do advise if that's confusing, I will then make a wiki.md for that.
 In case of you getting "Config file is not ready". This indicate your config generated from vam:config is still work in progress.
 
+```bash
     'ready' => false, // set true when you are ready to generate CRUD
+```
 
 Once you have done your config, you can switch that to true. Of course after vam:make is done, this section will be turned to true automatically.
 This could prevent you from accidentally run vam:make again.
@@ -56,10 +69,11 @@ This could prevent you from accidentally run vam:make again.
 	- ~Datetime picker~
 	- ~Date or Time picker~
 	- Select, Radio & Checkbox fetch options from Model
-2. Profile View & Update
-3. Swal alert message
+2. ~Profile View & Update~
+3. ~Swal alert message~
 4. Setting update push notification
-5. (still thinking...)
+5. ~Customize action confirmed message on declared "confirmed" in Vuex~
+...still thinking...
 
 ## Security
 

@@ -88,7 +88,7 @@ class UserController extends Controller
 
         $user->update($request->all());
 
-        activity('Created User Password: ' . $user->id, $request->all(), $user);
+        activity('Updated User Password: ' . $user->id, $request->all(), $user);
 
         return response()->json([
             'id' => $user->id,

@@ -28,6 +28,13 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             {{-- <a class="dropdown-item" href="#">Settings</a><a class="dropdown-item" href="#">Activity Log</a>
                             <div class="dropdown-divider"></div> --}}
+                            <router-link :to="{ name: 'profile.edit' }" class="dropdown-item">
+                                <i class="fas fa-user mr-2"></i>Profile
+                            </router-link>
+                            <router-link :to="{ name: 'profile.editPassword' }" class="dropdown-item">
+                                <i class="fas fa-lock mr-2"></i>Change Password
+                            </router-link>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ route('logout') }}"><i
                                     class="fas fa-power-off mr-2"></i>Logout</a>
                         </div>
@@ -41,6 +48,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <sidebar user-name="hello world"></sidebar>
+                            {{-- user-name="hello world" this is just testing to pass the props to the vue component --}}
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

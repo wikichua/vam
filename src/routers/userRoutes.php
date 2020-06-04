@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['web', 'auth', 'can:Access Admin Panel']], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::view('', 'vam::layouts.panel')->middleware('can:Read Users');
