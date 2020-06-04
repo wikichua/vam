@@ -61,7 +61,7 @@ class VamMake extends Command
 
         if (isset($this->config['table_name']) && $this->config['table_name'] != '') {
             $this->replaces['{%table_name%}'] = $this->config['table_name'];
-            $this->replaces['{%table_declared%}'] = "protected $table = '{$this->config['table_name']}';";
+            $this->replaces['{%table_declared%}'] = "protected \$table = '{$this->config['table_name']}';";
         }
         if (isset($this->config['menu_name']) && $this->config['menu_name'] != '') {
             $this->replaces['{%menu_name%}'] = $this->config['menu_name'];
