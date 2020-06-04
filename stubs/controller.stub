@@ -74,4 +74,26 @@ class {%model_class%}Controller extends Controller
             'message' => '{%model_class%} deleted.',
         ]);
     }
+
+    public function getModelList(Request $request)
+    {
+        if ($request->get('key', '') == '') {
+            return [];
+        }
+
+        if (is_array($request->get('key'))) {
+            $keys = $request->get('key');
+        } else {
+            $keys = [$request->get('key')];
+        }
+
+        $lists = [];
+        foreach ($keys as $key) {
+            $method = "scope" . studly_case($key) . "Method";
+            $lists[$key] = method_exists($this, $method) ? $this->{$method}() : [];
+        }
+        return response()->json($lists);
+    }
+
+    {%scopeModelMethods%}
 }

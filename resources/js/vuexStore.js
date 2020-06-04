@@ -8,6 +8,7 @@ let state = {
     success: false,
     allerrors: [],
     settings: [],
+    models: [],
     axiosConfigs: {
         headers: {
             'content-type': 'multipart/form-data'
@@ -19,6 +20,7 @@ let getters = {
     success: state => { return state.success; },
     allerrors: state => { return state.allerrors; },
     settings: state => { return state.settings; },
+    models: state => { return state.models; },
 };
 let mutations = {};
 // use Fire.route() for ziggy router laravel route name
@@ -28,6 +30,7 @@ let actions = {
         state.success = false;
         state.allerrors = [];
         state.settings = {};
+        state.models = {};
     },
     getSettingsList({ commit }, key) {
         if (Array.isArray(key)) {
@@ -37,6 +40,25 @@ let actions = {
         } else {
             state.settings[key] = Fire.$settings(key);
         }
+    },
+    getModelsList({ commit }, url) {
+        // Fire.route('setting.dropdown', key) // use Fire in customEvents.js to call route because in ziggy.js, Vue.mixin is defined
+        Fire.$loading(true);
+        Fire.$Progress.start();
+        axios.get(url)
+            .then(response => {
+                state.models = response.data;
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            }).finally(() => {
+                Fire.$loading(false);
+                Fire.$Progress.finish();
+            });
     },
     postItem({ commit, dispatch }, obj) {
         let canSubmitNow = true;

@@ -16,6 +16,6 @@ Route::group(['middleware' => ['web', 'auth', 'can:Access Admin Panel']], functi
         Route::match(['put', 'patch'], '{{%model_variable%}}/update', '{%model_class%}Controller@update')->name('{%model_variable%}.update');
         Route::match(['delete'], '{{%model_variable%}}/delete', '{%model_class%}Controller@destroy')->name('{%model_variable%}.destroy');
 
-        Route::match(['get', 'head'], 'extendedList', '{%model_class%}@getExendedList')->name('{%model_variable%}.getExendedList');
+        Route::match(['get', 'head'], 'modelList', '{%model_class%}Controller@getModelList')->name('{%model_variable%}.modelList');
     });
 });

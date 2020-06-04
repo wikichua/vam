@@ -4,7 +4,7 @@
               name="{%field%}"
               v-model="formdata.{%field%}"
               :class="(allerrors.{%field%} ? 'is-invalid ' : '') + ' {%class_tag%}'"
-              :options="settings['{%setting_key%}']"
+              :options="{%option_key%}"
               {%attributes_tag%}
             ></b-form-select>
             <div v-if="allerrors.{%field%}" :class="['invalid-feedback']">{{ allerrors.{%field%}[0] }}</div>

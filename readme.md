@@ -67,12 +67,14 @@ This could prevent you from accidentally run vam:make again.
     - Create and Edit form
         - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio and etc...
 1. Swal and Toast integrated
+1. Select, Radio or Checkbox options will be added to settings table during migration
+1. Select, Radio or Checkbox model options will be generated codes in controller and both create and edit component. 
 
 ### Todo
 
 1. Additional fields to support
 	- Editor
-	- Select, Radio & Checkbox fetch options from Model
+	- ~Select, Radio & Checkbox fetch options from Model~
     - Select2 or Datalist from Bootstrap-vue
 1. Setting update push notification
 1. ...still thinking...

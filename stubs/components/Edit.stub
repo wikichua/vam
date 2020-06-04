@@ -46,6 +46,7 @@ export default {
   },
   mounted() {
     {%dispatch_getSettingsList%}
+    {%dispatch_getModelsList%}
     this.$store.dispatch(
       "getItem",
       this.$parent.route(this.apiRouteShow, this.id)
@@ -55,7 +56,7 @@ export default {
     this.$store.dispatch("resetState");
   },
   computed: {
-    ...mapGetters(["allerrors", "success", "formdata", "settings", "extends"])
+    ...mapGetters(["allerrors", "success", "formdata", "settings", "models"])
   }
 };
 </script>

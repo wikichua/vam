@@ -58,6 +58,9 @@ class VamMake extends Command
         $this->replaces['{%table_declared%}'] = '';
         $this->replaces['{%menu_name%}'] = $this->replaces['{%model_strings%}'];
         $this->replaces['{%menu_icon%}'] = $this->config['menu_icon'];
+        $this->replaces['{%scopeModelMethods%}'] = '';
+        $this->replaces['{%dispatch_getSettingsList%}'] = '';
+        $this->replaces['{%dispatch_getModelsList%}'] = '';
 
         if (isset($this->config['table_name']) && $this->config['table_name'] != '') {
             $this->replaces['{%table_name%}'] = $this->config['table_name'];
@@ -70,9 +73,10 @@ class VamMake extends Command
     protected function reinstate()
     {
         $config_form = $this->config['form'];
-        $setting_keys = $table_fields = $search_scopes = $settings_options_up = $settings_options_down = $read_fields = $form_fields = $validations = $user_timezones = $fillables = $casts = $appends = $mutators = $relationships = $relationships_query = [];
+        $apiScoopModelMethodRoute = $scopeModelMethods = $model_keys = $setting_keys = $table_fields = $search_scopes = $settings_options_up = $settings_options_down = $read_fields = $form_fields = $validations = $user_timezones = $fillables = $casts = $appends = $mutators = $relationships = $relationships_query = [];
 
         foreach ($config_form as $field => $options) {
+            $this->replaces['{%field_variable%}'] = studly_case($field);
             if (isset($options['migration']) && $options['migration'] != '') {
                 $migration = $options['migration'];
                 $this->replaces['{%field%}'] = $field;
@@ -120,10 +124,17 @@ class VamMake extends Command
                 }
             }
 
-            $replace_for_form['{%setting_key%}'] = '';
+            $replace_for_form['{%option_key%}'] = '';
 
-            if (isset($options['model_options']) && $options['model_options'] != '') {
-                # code...
+            if (isset($options['model_options']) && is_array($options['model_options']) && count($options['model_options'])) {
+                $replace_for_form['{%model_option_query%}'] = $options['model_options']['query'];
+                $replace_for_form['{%map_text%}'] = $options['model_options']['map_text'];
+                $replace_for_form['{%map_value%}'] = $options['model_options']['map_value'];
+                $stub = $this->stub_path . '/scopeModelMethod.stub';
+                $stub = str_replace(array_keys($this->replaces), $this->replaces, $this->indent() . $this->files->get($stub));
+                $scopeModelMethods[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
+                $model_keys[] = "{$field}";
+                $replace_for_form['{%option_key%}'] = "models['{$field}']";
             } else {
                 if (isset($options['options']) && is_array($options['options']) && count($options['options'])) {
                     $opts = [];
@@ -133,8 +144,7 @@ class VamMake extends Command
                     $setting_keys[] = $setting_key = "{$this->replaces['{%model_variable%}']}_{$field}";
                     $settings_options_up[] = "app(config('vam.models.setting'))->create(['key' => '$setting_key','value' => [" . implode(',', $opts) . "]]);";
                     $settings_options_down[] = "app(config('vam.models.setting'))->where('key','$setting_key')->forceDelete();";
-
-                    $replace_for_form['{%setting_key%}'] = $setting_key;
+                    $replace_for_form['{%option_key%}'] = "settings['{$setting_key}']";
                 }
             }
 
@@ -250,6 +260,12 @@ class VamMake extends Command
             $this->replaces['{%dispatch_getSettingsList%}'] = $dispatch_str . PHP_EOL . $this->indent(1) . "// you may now access with this.settings.<setting_key> or this.settings['<setting_key>']";
         }
 
+        if (count($model_keys) > 0) {
+            $url = 'this.$parent.route("' . $this->replaces['{%model_variable%}'] . '.modelList",' . json_encode(['key' => $model_keys]) . ')';
+            $dispatch_str = 'this.$store.dispatch("getModelsList", ' . $url . ');';
+            $this->replaces['{%dispatch_getModelsList%}'] = $dispatch_str . PHP_EOL . $this->indent(1) . "// you may now access with this.models.<field> or this.models['<field>']";
+        }
+
         $this->replaces['{%fillable_array%}'] = implode(",\n" . $this->indent(2), $fillables);
         $this->replaces['{%mutators%}'] = implode(",\n" . $this->indent(2), $mutators);
         $this->replaces['{%model_casts%}'] = "protected \$casts = [\n" . $this->indent(2) . implode(",\n" . $this->indent(2), $casts) . "\n" . $this->indent(1) . "];";
@@ -265,6 +281,7 @@ class VamMake extends Command
         $this->replaces['{%settings_options_down%}'] = isset($settings_options_down) ? trim(implode(PHP_EOL . $this->indent(2), $settings_options_down)) : '';
         $this->replaces['{%search_scopes%}'] = isset($search_scopes) ? trim(implode(PHP_EOL . $this->indent(1), $search_scopes)) : '';
         $this->replaces['{%table_fields%}'] = isset($table_fields) ? trim(implode(',' . PHP_EOL . $this->indent(2) . "  ", $table_fields)) . ',' : '';
+        $this->replaces['{%scopeModelMethods%}'] = isset($scopeModelMethods) ? trim(implode(PHP_EOL, $scopeModelMethods)) : '';
 
         $this->model();
         $this->controller();

@@ -36,7 +36,7 @@ export default {
     );
   },
   computed: {
-    ...mapGetters(["allerrors", "success", "formdata", "settings", "extends"])
+    ...mapGetters(["allerrors", "success", "formdata", "settings", "models"])
   }
 };
 </script>

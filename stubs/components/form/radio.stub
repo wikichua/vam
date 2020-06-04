@@ -3,7 +3,7 @@
       	v-model="formdata.{%field%}"
         name="{%field%}"
         {%attributes_tag%}
-                :options="settings['{%setting_key%}']"
+                :options="{%option_key%}"
       ></b-form-radio-group>
             <div v-if="allerrors.{%field%}" :class="['invalid-feedback']">{{ allerrors.{%field%}[0] }}</div>
     </b-form-group>
