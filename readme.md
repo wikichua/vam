@@ -75,8 +75,7 @@ This could prevent you from accidentally run vam:make again.
 	- Select, Radio & Checkbox fetch options from Model
     - Select2 or Datalist from Bootstrap-vue
 1. Setting update push notification
-
-...still thinking...
+1. ...still thinking...
 
 ## Security
 
