@@ -14,16 +14,20 @@
 
 ## Installation
 
-Setup new Laravel project
+Setup new Laravel project in terminal
 
 ``` bash
 $ laravel new **project**
 ```
 
+In your .env file
+
 ``` env
 APP_URL=https://**project.test**
 DB_DATABASE=**project_table**
 ```
+
+Back to your terminal
 
 ``` bash
 $ composer require wikichua/vam dev-master
@@ -31,14 +35,6 @@ $ php artisan vendor:publish --tag=vam.install --force
 $ php artisan migrate
 $ php artisan ziggy:generate
 $ npm install && npm run dev
-```
-
-Remember to update your .env file, especially the database section, and also your domain name for ziggy generate purposes.
-
-This is how I normall do
-
-``` bash
-art vendor:publish --tag=vam.install --force && art ziggy:generate && npm run watch-poll
 ```
 
 In your app/User.php
@@ -54,6 +50,12 @@ class User extends \Wikichua\VAM\Models\User
     use \Wikichua\VAM\Http\Traits\UserTimezone;
 ```
 
+This is how I normall do
+
+``` bash
+art vendor:publish --tag=vam.install --force && art ziggy:generate && npm run watch-poll
+```
+
 ## Usage
 
 ### Creating new module
@@ -65,10 +67,18 @@ $ php artisan ziggy:generate
 $ npm install && npm run dev
 ```
 
+This is how I normall do
+
+``` bash
+art ziggy:generate && npm run watch-poll
+```
+
 #### Config
 
-You may get the sample once vam:config called. Do advise if that's confusing, I will then make a wiki.md for that.
-In case of you getting "Config file is not ready". This indicate your config generated from vam:config is still work in progress.
+You may get the sample of config file once vam:config called. 
+Do advise if that's confusing, I will then make a wiki.md for that.
+In case of you getting "Config file is not ready". 
+This indicating your config generated from vam:config is still work in progress.
 
 ``` php
     'ready' => false, // set true when you are ready to generate CRUD
