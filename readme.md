@@ -136,6 +136,28 @@ But it's still good using it so all you need to do is
 1. Npm run prod
 1. Push to your repo and all set to go
 
+#### Sample of the vam:make output
+
+``` bash
+$ art vam:config Test
+    Config file created: config/vam/TestConfig.php
+$ art vam:make Test --force
+    Config Test Found! Initiating!
+    Model file created: /codes/vam/app/Test.php
+    Controller file created: /codes/vam/app/Http/Controllers/Admin/TestController.php
+    API Route file created: routes/routers/testRoutes.php
+    VUE Route file created: /codes/vam/resources/js/routers/testRoutes.js
+    Menu included: routes/web.php
+    Vue component file created: /codes/vam/resources/js/components/test/ListComponent.vue
+    Vue component file created: /codes/vam/resources/js/components/test/CreateComponent.vue
+    Vue component file created: /codes/vam/resources/js/components/test/EditComponent.vue
+    Vue component file created: /codes/vam/resources/js/components/test/ShowComponent.vue
+    Menu included: routes/web.php
+    Migration file created: /codes/vam/database/migrations/2020_06_05_000000_VamTestTable.php
+    Since you had done make the CRUD, we will help you set ready to false to prevent accidentally make after you have done all your changes in your flow!
+    Config has changed: /codes/vam/config/vam/TestConfig.php
+```
+
 ### Current Edition
 
 1. Activity Logging
