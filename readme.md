@@ -105,6 +105,11 @@ This indicating your config generated from vam:config is still work in progress.
 Once you have done your config, you can switch that to true. Of course after vam:make is done, this section will be turned to true automatically.
 This could prevent you from accidentally run vam:make again.
 
+You may access with this auto populated login
+
+> email: admin@email.com
+> password: admin123
+
 ### Current Edition
 
 1. Activity Logging
