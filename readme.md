@@ -12,12 +12,29 @@
 3. A working NPM in your machine
 4. Knowledge in Vue Js, Bootstrap-Vue, Axios, Sass, & all Laravel stuffs...
 
+### Vue Package integrated
+``` json
+"@popperjs/core": "^2.4.0",
+"bootstrap-vue": "^2.15.0",
+"moment": "^2.26.0",
+"portal-vue": "^2.1.7",
+"sweetalert2": "^9.13.2",
+"vform": "^1.0.1",
+"vue-progressbar": "^0.7.5",
+"vue-router": "^3.3.1",
+"vue2-editor": "^2.10.2",
+"vuejs-loading-plugin": "^1.0.51",
+"vuex": "^3.4.0",
+"watch": "^1.0.2"
+```
+
 ## Installation
 
 Setup new Laravel project in terminal
 
 ``` bash
 $ laravel new **project**
+$ php artisan storage:link
 ```
 
 In your .env file
@@ -108,6 +125,7 @@ This could prevent you from accidentally run vam:make again.
 You may access with this auto populated login
 
 > email: admin@email.com
+
 > password: admin123
 
 #### Deployment issue
@@ -130,7 +148,7 @@ But it's still good using it so all you need to do is
     - Datatable listing
         - Able to delete row record (Authorization Gate included)
     - Create and Edit form
-        - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio and etc...
+        - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio, Editor and etc...
 1. Swal and Toast integrated
 1. Select, Radio or Checkbox options will be added to settings table during migration
 1. Select, Radio or Checkbox model options will be generated codes in controller and both create and edit component. 
@@ -138,7 +156,7 @@ But it's still good using it so all you need to do is
 ### Todo
 
 1. Additional fields to support
-	- Editor
+	- ~Editor~
 	- ~Select, Radio & Checkbox fetch options from Model~
     - Select2 or Datalist from Bootstrap-vue
 1. Setting update push notification

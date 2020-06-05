@@ -240,6 +240,15 @@ class VamMake extends Command
                     $stub = $this->files->get($stub);
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
+                case 'editor':
+                    $stub = $this->stub_path . '/components/form/editor.stub';
+                    if (!$this->files->exists($stub)) {
+                        $this->error('Editor stub file not found: <info>' . $stub . '</info>');
+                        return;
+                    }
+                    $stub = $this->files->get($stub);
+                    $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
+                    break;
                 default:
                     $this->error('Input Type not supported: <info>' . $field . ':' . $options['type'] . '</info>');
                     break;

@@ -10,6 +10,7 @@ require('./plugins/portalvue');
 require('./plugins/sweetAlert2');
 require('./plugins/progressbar');
 require('./plugins/vueLoading');
+require('./plugins/vue2editor');
 require('./plugins/ziggy');
 require('./plugins/permissions');
 require('./plugins/settings');
