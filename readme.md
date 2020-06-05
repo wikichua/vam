@@ -110,6 +110,14 @@ You may access with this auto populated login
 > email: admin@email.com
 > password: admin123
 
+#### Deployment issue
+
+Okay! I love ziggy but for now, there is no support env detection or either I can't figure out other way of hack technique.
+But it's still good using it so all you need to do is 
+1. Change you .env file APP_URL to your production DNS
+1. Npm run prod
+1. Push to your repo and all set to go
+
 ### Current Edition
 
 1. Activity Logging
