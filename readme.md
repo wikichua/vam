@@ -31,11 +31,29 @@ Back to your terminal
 
 ``` bash
 $ composer require wikichua/vam dev-master
+$ composer require laravel/ui
 $ php artisan vendor:publish --tag=vam.install --force
 $ php artisan migrate
 $ php artisan ziggy:generate
 $ npm install && npm run dev
 ```
+
+> php artisan vendor:publish --tag=vam.install --force
+
+You will see this..
+
+``` bash
+Copied Directory [/vendor/wikichua/vam/resources/js] To [/resources/js]
+Copied Directory [/vendor/wikichua/vam/resources/sass] To [/resources/sass]
+Copied File [/vendor/wikichua/vam/package.json] To [/package.json]
+Copied File [/vendor/wikichua/vam/webpack.mix.js] To [/webpack.mix.js]
+```
+
+Scary but yeah, it does overwrited if you already had modified those in your files (Suggest to backup those before publishing with --force):
+
+1. resources/js/app.js
+1. resources/js/bootstrap.js
+1. webpack.mix.js
 
 In your app/User.php
 
