@@ -14,6 +14,17 @@
 
 ## Installation
 
+Setup new Laravel project
+
+``` bash
+$ laravel new **project**
+```
+
+``` env
+APP_URL=https://**project.test**
+DB_DATABASE=**project_table**
+```
+
 ``` bash
 $ composer require wikichua/vam dev-master
 $ php artisan vendor:publish --tag=vam.install --force
@@ -30,11 +41,24 @@ This is how I normall do
 art vendor:publish --tag=vam.install --force && art ziggy:generate && npm run watch-poll
 ```
 
+In your app/User.php
+
+``` php
+class User extends \Wikichua\VAM\Models\User
+{
+    use Notifiable;
+
+    use \Wikichua\VAM\Http\Traits\AdminUser;
+    use \Wikichua\VAM\Http\Traits\ModelScopes;
+    use \Wikichua\VAM\Http\Traits\DynamicFillable;
+    use \Wikichua\VAM\Http\Traits\UserTimezone;
+```
+
 ## Usage
 
 ### Creating new module
 
-```bash
+``` bash
 $ php artisan vam:config <ModelName>
 $ php artisan vam:make <ModelName>
 $ php artisan ziggy:generate
@@ -46,7 +70,7 @@ $ npm install && npm run dev
 You may get the sample once vam:config called. Do advise if that's confusing, I will then make a wiki.md for that.
 In case of you getting "Config file is not ready". This indicate your config generated from vam:config is still work in progress.
 
-```bash
+``` php
     'ready' => false, // set true when you are ready to generate CRUD
 ```
 
