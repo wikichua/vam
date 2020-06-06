@@ -361,7 +361,7 @@ return [
                 'set' => '',
             ],
             'relationship' => [
-                'author' => 'belongsTo:App\User,author_id,id',
+                'another_user' => 'belongsTo:App\User,another_user_id,id',
             ],
             'user_timezone' => false,
         ],

@@ -14,6 +14,15 @@ let state = {
             'content-type': 'multipart/form-data'
         }
     },
+    swalOptions: {
+        title: 'Are you sure?',
+        text: null,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, do it!'
+    }
 };
 let getters = {
     formdata: state => { return state.formdata; },
@@ -29,8 +38,8 @@ let actions = {
         state.formdata = {};
         state.success = false;
         state.allerrors = [];
-        state.settings = {};
-        state.models = {};
+        // state.settings = {};
+        // state.models = {};
     },
     getSettingsList({ commit }, key) {
         if (Array.isArray(key)) {
@@ -43,36 +52,38 @@ let actions = {
     },
     getModelsList({ commit }, url) {
         // Fire.route('setting.dropdown', key) // use Fire in customEvents.js to call route because in ziggy.js, Vue.mixin is defined
-        Fire.$loading(true);
-        Fire.$Progress.start();
-        axios.get(url)
-            .then(response => {
-                state.models = response.data;
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!'
-                });
-            }).finally(() => {
-                Fire.$loading(false);
-                Fire.$Progress.finish();
-            });
+        let key = url.urlParams.key;
+        key.forEach((keyName) => {
+            if (!(keyName in state.models)) {
+                Fire.$loading(true);
+                Fire.$Progress.start();
+                axios.get(url)
+                    .then(response => {
+                        let respData = response.data;
+                        for (let [index, value] of Object.entries(respData)) {
+                            state.models[index] = value;
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!'
+                        });
+                    }).finally(() => {
+                        Fire.$loading(false);
+                        Fire.$Progress.finish();
+                    });
+            }
+        });
+
     },
     postItem({ commit, dispatch }, obj) {
         let canSubmitNow = true;
         if (obj.hasOwnProperty('confirmed')) {
             canSubmitNow = false;
-            Swal.fire({
-                title: 'Are you sure?',
-                text: obj.confirmed,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!'
-            }).then((result) => {
+            state.swalOptions['text'] = obj.confirmed;
+            Swal.fire(state.swalOptions).then((result) => {
                 if (result.value) {
                     dispatch('commitPost', obj);
                 }
@@ -86,15 +97,8 @@ let actions = {
         obj.data.append('_method', 'patch');
         if (obj.hasOwnProperty('confirmed')) {
             canSubmitNow = false;
-            Swal.fire({
-                title: 'Are you sure?',
-                text: obj.confirmed,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!'
-            }).then((result) => {
+            state.swalOptions['text'] = obj.confirmed;
+            Swal.fire(state.swalOptions).then((result) => {
                 if (result.value) {
                     dispatch('commitPost', obj);
                 }
@@ -108,15 +112,8 @@ let actions = {
         obj.data.append('_method', 'put');
         if (obj.hasOwnProperty('confirmed')) {
             canSubmitNow = false;
-            Swal.fire({
-                title: 'Are you sure?',
-                text: obj.confirmed,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, submit it!'
-            }).then((result) => {
+            state.swalOptions['text'] = obj.confirmed;
+            Swal.fire(state.swalOptions).then((result) => {
                 if (result.value) {
                     dispatch('commitPost', obj);
                 }
@@ -128,19 +125,12 @@ let actions = {
     deleteItem({ commit }, obj) {
         let url = obj.url;
         let table = obj.table;
-        let msg = "You are going to make a difficult decision!";
+        let msg = "You are going to make a very difficult decision!";
         if (obj.hasOwnProperty('confirmed')) {
             msg = obj.confirmed;
         }
-        Swal.fire({
-            title: 'Are you sure?',
-            text: msg,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
+        state.swalOptions['text'] = msg;
+        Swal.fire(state.swalOptions).then((result) => {
             if (result.value) {
                 Fire.$loading(true);
                 Fire.$Progress.start();
