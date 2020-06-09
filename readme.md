@@ -180,7 +180,8 @@ $ art vam:make Test --force
 1. Additional fields to support
 	- ~Editor~
 	- ~Select, Radio & Checkbox fetch options from Model~
-    - Select2 or Datalist from Bootstrap-vue
+    - ~Select2~
+    - Datalist from Bootstrap-vue
 1. Setting update push notification
 1. ...still thinking...
 

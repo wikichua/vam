@@ -9,6 +9,7 @@ require('./plugins/popper');
 require('./plugins/portalvue');
 require('./plugins/sweetAlert2');
 require('./plugins/progressbar');
+require('./plugins/vueSelect');
 require('./plugins/vueLoading');
 require('./plugins/vue2editor');
 require('./plugins/ziggy');

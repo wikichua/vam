@@ -167,7 +167,7 @@ return [
 
         'cover_letter' => [
             'label' => 'Cover Letter',
-            'type' => 'editor',
+            'type' => 'editor', // https://www.vue2editor.com/
             'class' => [],
             'attributes' => [],
             'list' => false,
@@ -339,9 +339,13 @@ return [
         // important notes. grabbing from model is still not available. added TODO list
         'another_user_id' => [
             'label' => 'Another User',
-            'type' => 'select', // empty to exclude form
+            'type' => 'vselect', // do u know select2? https://vue-select.org/
             'class' => [],
-            'attributes' => [],
+            'attributes' => [
+                'taggable', // if u want the tag feature
+                'multiple', // multiple values
+                'push-tags', // add additional tag
+                ],
             'list' => false,
             'search' => false,
             'migration' => 'string:{%field%},1|nullable|default:',

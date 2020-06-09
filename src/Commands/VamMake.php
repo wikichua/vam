@@ -214,9 +214,18 @@ class VamMake extends Command
                     $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
                     break;
                 case 'select':
-                    $stub = $this->stub_path . '/components/form/' . $options['type'] . '.stub';
+                    $stub = $this->stub_path . '/components/form/select.stub';
                     if (!$this->files->exists($stub)) {
                         $this->error('Select stub file not found: <info>' . $stub . '</info>');
+                        return;
+                    }
+                    $stub = $this->files->get($stub);
+                    $form_fields[] = str_replace(array_keys($replace_for_form), $replace_for_form, $stub);
+                    break;
+                case 'vselect':
+                    $stub = $this->stub_path . '/components/form/vselect.stub';
+                    if (!$this->files->exists($stub)) {
+                        $this->error('VSelect stub file not found: <info>' . $stub . '</info>');
                         return;
                     }
                     $stub = $this->files->get($stub);
