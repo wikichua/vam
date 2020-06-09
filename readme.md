@@ -28,6 +28,33 @@
 "watch": "^1.0.2"
 ```
 
+### Current Edition
+
+1. Activity Logging
+1. Preset Authentication (exactly from Laravel scaffolding)
+1. Permission & Role (Authorization)
+1. Settings configuration
+1. Basic Users' Management
+1. Profile & Password Update
+1. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
+    - Datatable listing (using common table component in bootstrap)
+        - Able to delete row record (Authorization Gate included)
+    - Create and Edit form
+        - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio, Editor and etc...
+1. Swal and Toast integrated
+1. Select, Radio or Checkbox options will be added to settings table during migration
+1. Select, Radio or Checkbox model options will be generated codes in controller and both create and edit component. 
+1. Vue Select AKA Select2
+
+### Todo
+
+1. Additional fields to support
+    - ~Editor~
+    - ~Select, Radio & Checkbox fetch options from Model~
+    - ~Select2 or Datalist from Bootstrap-vue~
+1. Setting update push notification
+1. ...still thinking...
+
 ## Installation
 
 Setup new Laravel project in terminal
@@ -157,33 +184,6 @@ $ art vam:make Test --force
     Since you had done make the CRUD, we will help you set ready to false to prevent accidentally make after you have done all your changes in your flow!
     Config has changed: /codes/vam/config/vam/TestConfig.php
 ```
-
-### Current Edition
-
-1. Activity Logging
-1. Preset Authentication (exactly from Laravel scaffolding)
-1. Permission & Role (Authorization)
-1. Settings configuration
-1. Basic Users' Management
-1. Profile & Password Update
-1. CRUD generator (create components for CRUD, migrations, forms, controller, model, etc...)
-    - Datatable listing
-        - Able to delete row record (Authorization Gate included)
-    - Create and Edit form
-        - Text, File, Textarea, Date or Time Picker, Select, Checkbox, Radio, Editor and etc...
-1. Swal and Toast integrated
-1. Select, Radio or Checkbox options will be added to settings table during migration
-1. Select, Radio or Checkbox model options will be generated codes in controller and both create and edit component. 
-1. Vue Select AKA Select2
-
-### Todo
-
-1. Additional fields to support
-	- ~Editor~
-	- ~Select, Radio & Checkbox fetch options from Model~
-    - ~Select2 or Datalist from Bootstrap-vue~
-1. Setting update push notification
-1. ...still thinking...
 
 ## Security
 
