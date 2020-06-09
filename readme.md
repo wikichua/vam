@@ -174,14 +174,14 @@ $ art vam:make Test --force
 1. Swal and Toast integrated
 1. Select, Radio or Checkbox options will be added to settings table during migration
 1. Select, Radio or Checkbox model options will be generated codes in controller and both create and edit component. 
+1. Vue Select AKA Select2
 
 ### Todo
 
 1. Additional fields to support
 	- ~Editor~
 	- ~Select, Radio & Checkbox fetch options from Model~
-    - ~Select2~
-    - Datalist from Bootstrap-vue
+    - ~Select2 or Datalist from Bootstrap-vue~
 1. Setting update push notification
 1. ...still thinking...
 
