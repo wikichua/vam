@@ -13,7 +13,7 @@ class UserController extends Controller
         $filter = $request->get('filter', '');
         $sortBy = $request->get('sortBy', '');
         $sortDesc = $request->get('sortDesc', '');
-        $users = app(config('vam.models.user'))->query()->filter($filter, $fields)->sorting($sortBy, $sortDesc)->paginate($request->get('size', 20));
+        $users = app(config('vam.models.user'))->query()->where('id','!=',1)->filter($filter, $fields)->sorting($sortBy, $sortDesc)->paginate($request->get('size', 20));
         return response()->json($users);
     }
 
