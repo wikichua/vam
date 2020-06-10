@@ -52,6 +52,7 @@
     - ~Editor~
     - ~Select, Radio & Checkbox fetch options from Model~
     - ~Select2 or Datalist from Bootstrap-vue~
+1. ~Auth route configurable~
 1. Setting update push notification
 1. ...still thinking...
 
@@ -98,6 +99,32 @@ Scary but yeah, it does overwrited if you already had modified those in your fil
 1. resources/js/app.js
 1. resources/js/bootstrap.js
 1. webpack.mix.js
+
+Optional Publishing..
+
+If you wish to ammend the auth layout at your wish or even change the admin theme layout..
+
+> php artisan vendor:publish --tag=vam.view
+
+What about the config? Namespaces? 
+
+> php artisan vendor:publish --tag=vam.config
+
+However, I prefer to use vam.config to toggle the availability for auth routes.
+
+``` php
+'hidden_auth_route_names' => [
+    'password_email' => false,
+    'password_request' => false,
+    'password_reset' => false,
+    'password_confirm' => false,
+    'login' => false,
+    'register' => false,
+    'logout' => false,
+],
+```
+
+So if you wish to use your own route declarations, just turn all of those to ***true***..
 
 In your app/User.php
 
