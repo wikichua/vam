@@ -123,12 +123,14 @@ class VAMServiceProvider extends ServiceProvider
             }
         });
     }
+
     protected function validatorExtensions()
     {
         Validator::extend('current_password', function ($attribute, $value, $parameters, $validator) {
             return Hash::check($value, auth()->user()->password);
         }, 'The current password is invalid.');
     }
+    
     protected function configSettings()
     {
         if (Schema::hasTable('settings')) {

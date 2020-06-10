@@ -12,7 +12,6 @@ class CreateUsersColumns extends Migration
     {
         // create columns
         Schema::table('users', function (Blueprint $table) {
-            $table->index('name');
             $table->string('type')->default('user');
             $table->string('timezone')->default(config('app.timezone'))->index();
         });

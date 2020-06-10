@@ -423,15 +423,25 @@ class VamMake extends Command
     }
     protected function migration()
     {
+        $msg = 'Migration file created';
         $migration_stub = $this->stub_path . '/migration.stub';
         if (!$this->files->exists($migration_stub)) {
             $this->error('Migration stub file not found: <info>' . $migration_stub . '</info>');
             return;
         }
-        $migration_file = database_path('migrations/' . date('Y_m_d_000000_') . "Vam{$this->model}Table.php");
+        $filename = "Vam{$this->model}Table.php";
+        $migration_file = database_path('migrations/' . date('Y_m_d_000000_') . $filename);
+
+        foreach ($this->files->files(database_path('migrations/')) as $file) {
+            if (str_contains($file->getPathname(), $filename)) {
+                $migration_file = $file->getPathname();
+                $msg = 'Migration file overwritten';
+            }
+        }
+
         $migrations_stub = $this->files->get($migration_stub);
         $this->files->put($migration_file, $this->replaceholder($migrations_stub));
-        $this->line('Migration file created: <info>' . $migration_file . '</info>');
+        $this->line($msg.': <info>' . $migration_file . '</info>');
     }
     protected function replaceholder($content)
     {
