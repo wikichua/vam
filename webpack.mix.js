@@ -1,6 +1,11 @@
 const mix = require('laravel-mix');
 const path = require('path');
 
+mix.browserSync({
+    open: false,
+    proxy: process.env.APP_URL
+});
+
 mix.webpackConfig({
     resolve: {
         alias: {
@@ -10,6 +15,6 @@ mix.webpackConfig({
 });
 
 mix.js('resources/js/app.js', 'public/js')
-	.js('resources/js/scripts.js', 'public/js')
+    .js('resources/js/scripts.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .version();
