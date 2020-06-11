@@ -20,6 +20,7 @@ class User extends Authenticatable
     {
         return $query->where('name', 'like', "%{$search}%");
     }
+
     public function scopeFilterEmail($query, $search)
     {
         return $query->where('email', 'like', "%{$search}%");

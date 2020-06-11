@@ -80,7 +80,6 @@
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
-    {{-- <script src="//use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script> --}}
 </body>
 
 </html>
