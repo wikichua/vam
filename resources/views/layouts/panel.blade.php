@@ -9,6 +9,7 @@
     <title>{{ config('app.name', 'Vue Admin Manager') }}</title>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.13.0/css/all.css" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
@@ -79,7 +80,7 @@
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+    {{-- <script src="//use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script> --}}
 </body>
 
 </html>

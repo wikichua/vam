@@ -16,15 +16,6 @@ class User extends Authenticatable
     use \Wikichua\VAM\Http\Traits\DynamicFillable;
     use \Wikichua\VAM\Http\Traits\UserTimezone;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'type'
-    ];
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
     public function scopeFilterName($query, $search)
     {
         return $query->where('name', 'like', "%{$search}%");
