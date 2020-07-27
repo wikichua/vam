@@ -78,9 +78,23 @@ Back to your terminal
 $ composer require wikichua/vam dev-master
 $ composer require laravel/ui
 $ php artisan vendor:publish --tag=vam.install --force
+```
+In your app/User.php
+``` php
+class User extends \Wikichua\VAM\Models\User
+{
+    use Notifiable;
+
+    use \Wikichua\VAM\Http\Traits\AdminUser;
+    use \Wikichua\VAM\Http\Traits\ModelScopes;
+    use \Wikichua\VAM\Http\Traits\DynamicFillable;
+    use \Wikichua\VAM\Http\Traits\UserTimezone;
+```
+Then you continue in your terminal
+``` bash
 $ php artisan migrate
 $ php artisan ziggy:generate
-$ npm install && npm run dev
+$ npm install --save --no-bin-links && npm run dev
 ```
 
 > php artisan vendor:publish --tag=vam.install --force
@@ -125,19 +139,6 @@ However, I prefer to use vam.config to toggle the availability for auth routes.
 ```
 
 So if you wish to use your own route declarations, just turn all of those to ***true***..
-
-In your app/User.php
-
-``` php
-class User extends \Wikichua\VAM\Models\User
-{
-    use Notifiable;
-
-    use \Wikichua\VAM\Http\Traits\AdminUser;
-    use \Wikichua\VAM\Http\Traits\ModelScopes;
-    use \Wikichua\VAM\Http\Traits\DynamicFillable;
-    use \Wikichua\VAM\Http\Traits\UserTimezone;
-```
 
 This is how I normall do
 
