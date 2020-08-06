@@ -24,9 +24,9 @@ class {%model_class%}Controller extends Controller
             {%validations_create%}
         ]);
 
-        ${%model_variable%} = {%model_class%}::create($request->all());
+        ${%model_variable%} = {%model_class%}::create($request->input());
 
-        activity('Created {%model_class%}: ' . ${%model_variable%}->id, $request->all(), ${%model_variable%});
+        activity('Created {%model_class%}: ' . ${%model_variable%}->id, $request->input(), ${%model_variable%});
 
         return response()->json([
             'id' => ${%model_variable%}->id,
@@ -49,9 +49,9 @@ class {%model_class%}Controller extends Controller
             {%validations_update%}
         ]);
 
-        ${%model_variable%}->update($request->all());
+        ${%model_variable%}->update($request->input());
 
-        activity('Updated {%model_class%}: ' . ${%model_variable%}->id, $request->all(), ${%model_variable%});
+        activity('Updated {%model_class%}: ' . ${%model_variable%}->id, $request->input(), ${%model_variable%});
 
         return response()->json([
             'id' => ${%model_variable%}->id,
