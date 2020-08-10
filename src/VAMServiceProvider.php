@@ -25,7 +25,9 @@ class VAMServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/web.php');
 
-        $this->app['router']->aliasMiddleware('https_protocol', 'Wikichua\VAM\Middleware\HttpsProtocol');
+        // $this->app['router']->aliasMiddleware('https_protocol', 'Wikichua\VAM\Middleware\HttpsProtocol');
+        $this->app['router']->pushMiddlewareToGroup('web', \Wikichua\VAM\Middleware\PhpDebugBar::class);
+        $this->app['router']->pushMiddlewareToGroup('web', \Wikichua\VAM\Middleware\HttpsProtocol::class);
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -130,7 +132,7 @@ class VAMServiceProvider extends ServiceProvider
             return Hash::check($value, auth()->user()->password);
         }, 'The current password is invalid.');
     }
-    
+
     protected function configSettings()
     {
         if (Schema::hasTable('settings')) {
